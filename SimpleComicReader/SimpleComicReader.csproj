@@ -36,7 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Icon0.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icon0.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ookii.Dialogs.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c15020868fd6249, processorArchitecture=MSIL">
@@ -131,9 +131,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icon0.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icon0.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
