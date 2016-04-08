@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
@@ -30,6 +31,8 @@ namespace SimpleComicReader
             }
         }
 
+        public ICommand RecentFolderCommand { get; private set; }
+
         public ComicFileBase CurrentSource => _currentSource >= 0 ? _sourceCollection?[_currentSource] : null;
 
         public ComicPageBase CurrentImage => CurrentSource?[_currentImage];
@@ -56,6 +59,8 @@ namespace SimpleComicReader
 
         public MainWindow()
         {
+            RecentFolderCommand = new RelayCommand(RecentFolder_Click);
+
             InitializeComponent();
 
             ComicZip.Initialize();
@@ -72,29 +77,22 @@ namespace SimpleComicReader
             var source = HwndSource.FromHwnd(new WindowInteropHelper(this).Handle);
             source?.AddHook(WndProc);
 
-            ConfigManager.LoadConfig();
+            ConfigManager.Instance.LoadConfig();
 
-            if (!string.IsNullOrEmpty(ConfigManager.LastFolder))
+            if (!string.IsNullOrEmpty(ConfigManager.Instance.LastFolder) &&
+                Directory.Exists(ConfigManager.Instance.LastFolder))
             {
-                var dir = new DirectoryInfo(ConfigManager.LastFolder);
+                var dir = new DirectoryInfo(ConfigManager.Instance.LastFolder);
 
                 SourceCollection = new ComicFolder(dir);
 
-                bool sourceFound = false;
-
-                if (!string.IsNullOrEmpty(ConfigManager.LastBook))
+                ConfigManager.Instance.AddToRecent(dir.FullName);
+                ConfigManager.Instance.SaveConfig();
+                
+                if (!string.IsNullOrEmpty(ConfigManager.Instance.LastBook)
+                    && SourceCollection.TryFindIndex(ConfigManager.Instance.LastBook, out _currentSource))
                 {
-                    for (int i = 0; i < SourceCollection.Count; i++)
-                    {
-                        if (SourceCollection[i].DisplayName == ConfigManager.LastBook)
-                        {
-                            _currentSource = i;
-                            sourceFound = true;
-                            break;
-                        }
-                    }
-
-                    _currentImage = sourceFound ? ConfigManager.LastPage : 0;
+                    _currentImage = ConfigManager.Instance.LastPage;
 
                     if (_currentImage < 0)
                     {
@@ -136,16 +134,26 @@ namespace SimpleComicReader
 
             if (folder.ShowDialog() == true)
             {
-                ConfigManager.LastFolder = folder.SelectedPath;
-                var dir = new DirectoryInfo(folder.SelectedPath);
+                var path = folder.SelectedPath;
 
-                SourceCollection = new ComicFolder(dir);
-                _currentSource = -1;
-                _currentImage = 0;
-                OnPropertyChanged(nameof(CurrentSource));
-                OnPropertyChanged(nameof(CurrentImage));
-                MenuMode = true;
+                OpenFolder(path);
             }
+        }
+
+        private void OpenFolder(string path)
+        {
+            ConfigManager.Instance.LastFolder = path;
+            var dir = new DirectoryInfo(path);
+
+            SourceCollection = new ComicFolder(dir);
+            _currentSource = -1;
+            _currentImage = 0;
+            OnPropertyChanged(nameof(CurrentSource));
+            OnPropertyChanged(nameof(CurrentImage));
+            MenuMode = true;
+
+            ConfigManager.Instance.AddToRecent(dir.FullName);
+            ConfigManager.Instance.SaveConfig();
         }
 
         readonly DispatcherTimer _swipeTimer;
@@ -209,16 +217,16 @@ namespace SimpleComicReader
                 _currentComic?.Unload();
                 _currentComic = CurrentSource;
 
-                ConfigManager.LastBook = CurrentSource?.DisplayName ?? "";
+                ConfigManager.Instance.LastBook = CurrentSource?.DisplayName ?? "";
             }
 
             if (propertyName == nameof(CurrentImage))
             {
                 PageViewer.ScrollToTop();
-                ConfigManager.LastPage = _currentImage;
+                ConfigManager.Instance.LastPage = _currentImage;
             }
 
-            ConfigManager.SaveConfig();
+            ConfigManager.Instance.SaveConfig();
 
             UpdateTitle();
 
@@ -363,6 +371,20 @@ namespace SimpleComicReader
         private void OpenFolder_Click(object sender, RoutedEventArgs e)
         {
             OpenFolder();
+        }
+
+        private void Recent_Click(object sender, RoutedEventArgs e)
+        {
+            var obj = sender as Button;
+            var menu = (ContextMenu)Resources["RecentMenu"];
+            menu.PlacementTarget = obj;
+            menu.IsOpen = true;
+        }
+
+        private void RecentFolder_Click(object obj)
+        {
+            var item = (string)obj;
+            OpenFolder(item);
         }
     }
 }

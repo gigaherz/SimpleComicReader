@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimpleComicReader"
         mc:Ignorable="d" d:DesignHeight="512" d:DesignWidth="960"
         FontSize="20" Background="#FF282834"
         ResizeMode="CanResizeWithGrip"
@@ -15,6 +16,17 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="AppStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <ContextMenu x:Key="RecentMenu" Placement="Top"
+                         DataContext="{x:Static local:ConfigManager.Instance}"
+                         ItemsSource="{Binding RecentFolders}">
+                <ContextMenu.ItemContainerStyle>
+                    <Style TargetType="{x:Type MenuItem}">
+                        <Setter Property="Command" Value="{Binding RecentFolderCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" />
+                        <Setter Property="CommandParameter" Value="{Binding Header, RelativeSource={RelativeSource Self}}" />
+                    </Style>
+                </ContextMenu.ItemContainerStyle>
+            </ContextMenu>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -95,8 +107,20 @@
                 ToolTip="Continue Reading"
                 Click="Reading_Click">🖻</Button>
 
-        <Button Grid.Row="1" HorizontalAlignment="Left"
+        <Grid Grid.Row="1" HorizontalAlignment="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"
                 ToolTip="Select Folder"
                 Click="OpenFolder_Click">📂</Button>
+            <Button Grid.Column="1" 
+                    DataContext="{x:Static local:ConfigManager.Instance}"
+                    Visibility="{Binding RecentVisibility}"
+                    ToolTip="Recent Folders"
+                    Click="Recent_Click">🕗</Button>
+        </Grid>
+        
     </Grid>
 </Window>

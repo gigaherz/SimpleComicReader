@@ -78,6 +78,7 @@
     <Compile Include="Readers\Archives\ComicRar.cs" />
     <Compile Include="Readers\Archives\ComicTar.cs" />
     <Compile Include="Readers\Archives\ComicZip.cs" />
+    <Compile Include="RelayCommand.cs" />
     <Page Include="AppStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
