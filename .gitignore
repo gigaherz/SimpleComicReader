@@ -1,0 +1,7 @@
+*.suo
+*.user
+*.DotSettings
+
+/SimpleComicReader/bin
+/SimpleComicReader/obj
+/packages
