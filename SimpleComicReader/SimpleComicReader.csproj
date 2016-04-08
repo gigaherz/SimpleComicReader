@@ -125,12 +125,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GDDL\GDDL\GDDL.csproj">
-      <Project>{9b3e6f96-d5cc-4284-a5fc-2d43485855f2}</Project>
-      <Name>GDDL</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Icon0.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
