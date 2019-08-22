@@ -43,7 +43,8 @@ namespace SimpleComicReader.Readers
             }
         }
 
-        private string GetThumbnailFilename()
+        private static string CacheFolder = ".";
+        static ComicFileBase()
         {
             var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             var appFolder = Path.Combine(appData, Application.Current.MainWindow.GetType().Assembly.GetName().Name);
@@ -54,14 +55,21 @@ namespace SimpleComicReader.Readers
             if (!Directory.Exists(cacheFolder))
                 Directory.CreateDirectory(cacheFolder);
 
+            CacheFolder = cacheFolder;
+        }
+
+        private string GetThumbnailFilename()
+        {
             var sourceName = SourceName + "_" + DisplayName + ".png";
 
-            return Path.Combine(cacheFolder, sourceName);
+            return Path.Combine(CacheFolder, sourceName);
         }
 
         private ImageSource LoadThumbnail()
         {
             var imageName = GetThumbnailFilename();
+            if (imageName == null)
+                return null;
 
             if (File.Exists(imageName))
             {

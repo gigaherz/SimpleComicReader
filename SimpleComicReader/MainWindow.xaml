@@ -88,24 +88,62 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
                     ToolTip="Previous Book"
-                    Click="PreviousSource_Click">⏮</Button>
+                    Click="PreviousSource_Click">
+                <Canvas Width="24" Height="24">
+                    <Polygon Points="19 20 9 12 19 4 19 20" SnapsToDevicePixels="True"
+                      Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+                    <Line X1="5" Y1="19" X2="5" Y2="5" SnapsToDevicePixels="True" StrokeThickness="1.5"
+                      Stroke="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+                </Canvas>
+            </Button>
             <Button Grid.Column="1"
                     ToolTip="Previous Page"
-                    Click="PreviousPage_Click">⏴</Button>
+                    Click="PreviousPage_Click">
+                <Canvas Width="24" Height="24">
+                    <Polygon Points="19 20 9 12 19 4 19 20" SnapsToDevicePixels="True"
+                      Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+                </Canvas>
+            </Button>
             <Button Grid.Column="2"
                     ToolTip="Select Book"
-                    Click="Library_Click">📚</Button>
+                    Click="Library_Click">
+                <Canvas Width="24" Height="24">
+                    <Path Data="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" StrokeThickness="1.5" SnapsToDevicePixels="True"
+                      Stroke="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+                    <Path Data="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" StrokeThickness="1.5" SnapsToDevicePixels="True"
+                      Stroke="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+                </Canvas>
+            </Button>
             <Button Grid.Column="3"
                     ToolTip="Next Page"
-                    Click="NextPage_Click">⏵</Button>
+                    Click="NextPage_Click">
+                <Canvas Width="24" Height="24">
+                    <Polygon Points="5 4 15 12 5 20 5 4" SnapsToDevicePixels="True"
+                      Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+                </Canvas>
+            </Button>
             <Button Grid.Column="4"
                     ToolTip="Next Book"
-                    Click="NextSource_Click">⏭</Button>
+                    Click="NextSource_Click">
+                <Canvas Width="24" Height="24">
+                    <Polygon Points="5 4 15 12 5 20 5 4" SnapsToDevicePixels="True"
+                      Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+                    <Line X1="19" Y1="5" X2="19" Y2="19" SnapsToDevicePixels="True" StrokeThickness="1.5"
+                      Stroke="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+                </Canvas>
+            </Button>
         </Grid>
 
         <Button Grid.Row="1" HorizontalAlignment="Center" Visibility="{Binding ReturnVisible}"
                 ToolTip="Continue Reading"
-                Click="Reading_Click">🖻</Button>
+                Click="Reading_Click">
+            <Canvas Width="24" Height="24">
+                <Path Data="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" StrokeThickness="1.5" SnapsToDevicePixels="True"
+                      Stroke="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+                <Path Data="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" StrokeThickness="1.5" SnapsToDevicePixels="True"
+                      Stroke="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+            </Canvas>
+        </Button>
 
         <Grid Grid.Row="1" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
@@ -114,12 +152,24 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
                 ToolTip="Select Folder"
-                Click="OpenFolder_Click">📂</Button>
+                Click="OpenFolder_Click">
+                <Canvas Width="24" Height="24">
+                    <Path Data="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" StrokeThickness="1.5" SnapsToDevicePixels="True"
+                      Stroke="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+                </Canvas>
+            </Button>
             <Button Grid.Column="1" 
                     DataContext="{x:Static local:ConfigManager.Instance}"
                     Visibility="{Binding RecentVisibility}"
                     ToolTip="Recent Folders"
-                    Click="Recent_Click">🕗</Button>
+                    Click="Recent_Click">
+                <Canvas Width="24" Height="24">
+                    <Ellipse Canvas.Left="2" Canvas.Top="2" Width="20" Height="20" StrokeThickness="1.5" SnapsToDevicePixels="True"
+                      Stroke="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+                    <Polyline Points="12 6 12 12 16 14" StrokeThickness="1.5" SnapsToDevicePixels="True"
+                      Stroke="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+                </Canvas>
+            </Button>
         </Grid>
         
     </Grid>
