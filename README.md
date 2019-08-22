@@ -14,5 +14,5 @@ Supports the most common archive formats:
 
 Image file formats:
 * JPEG/PNG/GIF/...: navitely supported by WIC (Windows Imaging Component)
-* WEBP: requires the codec to be installed: https://developers.google.com/speed/webp/docs/webp_codec
+* WEBP: requires a codec to be installed, such as [this one from Google](https://storage.googleapis.com/downloads.webmproject.org/releases/webp/WebpCodecSetup.exe)
 * Other formats: only if WIC Codecs are available.
