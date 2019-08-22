@@ -2,6 +2,13 @@
 *.user
 *.DotSettings
 
+/packages
+/.vs
+
 /SimpleComicReader/bin
 /SimpleComicReader/obj
-/packages
+/SimpleComicReader/.vs
+
+/SimpleComicReaderApp/bin
+/SimpleComicReaderApp/obj
+/SimpleComicReaderApp/.vs
