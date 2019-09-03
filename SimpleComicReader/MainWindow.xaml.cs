@@ -72,6 +72,17 @@ namespace SimpleComicReader
             _swipeTimer.Tick += SwipeTimerTick;
         }
 
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam, ref bool handled)
+        {
+            if (msg == 0x20e) // WM_MOUSEHWHEEL
+            {
+                var delta = (short)(wparam.ToInt64() >> 16);
+                HorizontalScroll(delta);
+            }
+
+            return IntPtr.Zero;
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var source = HwndSource.FromHwnd(new WindowInteropHelper(this).Handle);
@@ -174,35 +185,30 @@ namespace SimpleComicReader
                 _swipeTimer.IsEnabled = false;
         }
 
-        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam, ref bool handled)
+        private void HorizontalScroll(short delta)
         {
-            if (msg == 0x20e) // WM_MOUSEHWHEEL
+            _swipeAcc += delta;
+
+            if (_swipeAcc >= 120)
             {
-                _swipeAcc += wparam.ToInt32() >> 16;
+                NextPage_Click(null, null);
 
-                if (_swipeAcc >= 120)
-                {
-                    NextPage_Click(null, null);
+                _swipeAcc = 0;
 
-                    _swipeAcc = 0;
-
-                    _swipeTimer.IsEnabled = false;
-                }
-                else if (_swipeAcc <= -120)
-                {
-                    PreviousPage_Click(null, null);
-
-                    _swipeAcc = 0;
-
-                    _swipeTimer.IsEnabled = false;
-                }
-                else
-                {
-                    _swipeTimer.IsEnabled = true;
-                }
+                _swipeTimer.IsEnabled = false;
             }
+            else if (_swipeAcc <= -120)
+            {
+                PreviousPage_Click(null, null);
 
-            return IntPtr.Zero;
+                _swipeAcc = 0;
+
+                _swipeTimer.IsEnabled = false;
+            }
+            else
+            {
+                _swipeTimer.IsEnabled = true;
+            }
         }
 
         private ComicFileBase _currentComic;
